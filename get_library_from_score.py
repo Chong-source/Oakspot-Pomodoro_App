@@ -27,7 +27,9 @@ class Library:
 
 
 class User:
-    """"""
+    """
+    User information
+    """
     quiet: int
     bright: int
     charger: int
