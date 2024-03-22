@@ -17,6 +17,7 @@ class _Vertex:
     item: Any
     kind: str
     neighbours: set[_Vertex]
+    # neighbours: dict[_WeightedVertex, Union[int, float]]
 
     def __init__(self, item: Any, neighbours: set[_Vertex]) -> None:
         """Initialize a new vertex with the given item and neighbours."""
@@ -54,6 +55,7 @@ class Graph:
     #         A collection of the vertices contained in this graph.
     #         Maps item to _Vertex object.
     _vertices: dict[Any, _Vertex]
+    # _vertices: dict[Any, _WeightedVertex]
 
     def __init__(self) -> None:
         """Initialize an empty graph (no vertices or edges)."""
