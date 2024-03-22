@@ -38,7 +38,19 @@ class User:
         self.charger = charger
         self.crowdedness = crowdedness
         self.libraries = libraries
-    def get_best_library(self):
+        
+    def get_best_library(self, limit:int):
+        l = []
+        for library in self.libraries:
+            l.append((library.name, library.get_score(self.quiet, self.bright, self.charger, self.crowdedness)))
+        l.sort(key=lambda key: key[1], reverse=True)
+
+        result, count = [], 0
+        while count < limit:
+            result.append(l[count][0])
+            count += 1
+        return result
+        
 
 
 def load() -> dict[str, Library]:
