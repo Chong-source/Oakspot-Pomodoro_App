@@ -18,23 +18,9 @@ class _Vertex:
     def similarity_score(self, other: _Vertex) -> float:
         x = self.neighbours
         y = other.neighbours
-        if self.degree() == 0 or other.degree() == 0:
-            return 0
-        else:
-            common = 0
-            a = 0
-            for vertex in x:
-                if vertex in y:
-                    common += 1
-                    a += 1
-                else:
-                    a += 1
-            for vertex in y:
-                if vertex in x:
-                    pass
-                else:
-                    a += 1
-            return common / a
+        intersection = len(self.neighbours.intersection(other.neighbours))
+        union = len(self.neighbours.union(other.neighbours))
+        return
 
 
 class Graph:
