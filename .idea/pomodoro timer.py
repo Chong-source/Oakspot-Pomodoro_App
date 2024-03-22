@@ -7,3 +7,4 @@ def reset_timer():
     canvas.itemconfig(timer_text, text = '00:00')
     title_label.config(text = 'Timer')
 
+u
