@@ -62,7 +62,6 @@ def load(file_name: str) -> list[Library]:
     with open(file_name, 'r') as file:
         reader = csv.reader(file)
         for row in reader:
-            print(row)
             libraries.append(Library(row[0], int(row[1]), int(row[2]), int(row[3]), int(row[4])))
     return libraries
 
