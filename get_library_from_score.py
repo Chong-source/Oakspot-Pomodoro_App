@@ -59,8 +59,8 @@ class User:
 
 def load(file_name: str) -> list[Library]:
     """ reads csv file with library ratings and stores them in a variable"""
-    libraries = []
 
+    # create a list of user vertices
     with open(file_name, 'r') as file:
         reader = csv.reader(file)
         for row in reader:

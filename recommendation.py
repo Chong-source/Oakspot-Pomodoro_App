@@ -1,8 +1,13 @@
 from __future__ import annotations
+
+import csv
 from typing import Any, Optional
 
 
 class _Vertex:
+    """
+    kind is in {'location', 'user'}
+    """
     item: Any
     kind: str
     neighbours: set[_Vertex]
@@ -20,7 +25,7 @@ class _Vertex:
         y = other.neighbours
         intersection = len(self.neighbours.intersection(other.neighbours))
         union = len(self.neighbours.union(other.neighbours))
-        return
+        return intersection / union
 
 
 class Graph:
@@ -30,6 +35,20 @@ class Graph:
         """Initialize an empty graph (no vertices or edges)."""
         self._vertices = {}
 
+    def add_vertex(self, item: Any, kind: str) -> None:
+        """Add a new vertex to the graph"""
+        self._vertices[item] = _Vertex(item, kind)
+
+    def add_edge(self, item1: Any, item2: Any) -> None:
+        if item1 in self._vertices and item2 in self._vertices:
+            v1 = self._vertices[item1]
+            v2 = self._vertices[item2]
+
+            v1.neighbours.add(v2)
+            v2.neighbours.add(v1)
+        else:
+            raise ValueError
+
     def get_similarity_score(self, item1: Any, item2: Any) -> float:
         if item1 or item2 not in self._vertices:
             raise ValueError
@@ -38,7 +57,7 @@ class Graph:
 
     def recommend_locations(self, location: str, limit: int) -> list[str]:
         locations_reverse_alp = [vertex for vertex in self._vertices
-                             if self._vertices[vertex].kind == 'location']
+                                 if self._vertices[vertex].kind == 'location']
         locations_reverse_alp.remove(location)
         locations_reverse_alp.sort(reverse=True)
         simlrity_scr_map = []
@@ -55,3 +74,32 @@ class Graph:
                 current_pair = simlrity_scr_map.pop(0)
                 count += 1
         return result
+
+
+def load_data(user_reviews: str, library_names: list[str]) -> Graph:
+    """Load data for a graph that is bipartite"""
+    graph = Graph()
+    for library in library_names:
+        graph.add_vertex(library, 'location')
+
+    with open(user_reviews) as file:
+        reader = csv.reader(file)
+        for row in reader:
+            graph.add_vertex(row[0], 'user')
+            graph.add_edge(row[0], row[1])
+    return graph
+
+
+if __name__ == '__main__':
+    libraries = [
+        'Robarts Library', 'Gerstein Science Information Centre',
+        'Thomas Fisher Rare Book Library', 'OISE Library',
+        'Engineering & Computer Science Library', 'Music Library',
+        'Kelly Library', 'UTSC Library', 'UTM Library',
+        'Dentistry Library', 'Architecture Landscape and Design Library',
+        "John M. Kelly Library (St. Michael's College)", 'New College Library'
+    ]
+    graph = load_data('user_review.csv', libraries)
+    user_input = input('What is your favorite library?: ')
+    recommend = ['OISE Library', 'Engineering & Computer Science Library', 'Music Library']
+    print(f"Here are the top 3 most similar libraries based on dummy user reviews: {recommend}")
