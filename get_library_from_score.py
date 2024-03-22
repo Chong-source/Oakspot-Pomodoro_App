@@ -13,6 +13,12 @@ class Libraries:
 
     def get_score(self, quiet_score, bright_score, charger_score, crowdedness_score) -> float:
         """Calculates the difference between this library's ratings and the user's """
+        gap = abs(self.quiet - quiet_score)
+        gap += abs(self.bright - bright_score)
+        gap += abs(self.charger - charger_score)
+        gap += abs(self.crowdedness - crowdedness_score)
+
+        return gap
 
 
 class User:
