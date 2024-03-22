@@ -30,3 +30,15 @@ class User:
         self.crowdedness = crowdedness
         self.libraries = libraries
     def get_best_library(self):
+
+
+def load() -> dict[str, Libraries]:
+    """ reads csv file with library ratings and stores them in a variable"""
+    libraries = {}
+    
+    with open(book_names_file, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            libraries[row[0]] = library(row[1], row[2], row[3], row[4])
+
+    return libraries
