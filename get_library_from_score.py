@@ -3,12 +3,14 @@ import csv
 
 class Library:
     """A data class that stores the scores of each """
+    name: str
     quiet: int
     bright: int
     charger: int
     crowdedness: int
 
-    def __init__(self, quiet, bright, charger, crowdedness) -> None:
+    def __init__(self, name, quiet, bright, charger, crowdedness) -> None:
+        self.name = name
         self.quiet = quiet
         self.bright = bright
         self.charger = charger
@@ -38,8 +40,9 @@ class User:
         self.charger = charger
         self.crowdedness = crowdedness
         self.libraries = libraries
-        
-    def get_best_library(self, limit:int):
+
+    def get_best_library(self, limit: int):
+        """Gets the best library based on the user's inputs"""
         l = []
         for library in self.libraries:
             l.append((library.name, library.get_score(self.quiet, self.bright, self.charger, self.crowdedness)))
@@ -50,21 +53,24 @@ class User:
             result.append(l[count][0])
             count += 1
         return result
-        
 
 
-def load() -> dict[str, Library]:
+def load(file_name: str) -> list[Library]:
     """ reads csv file with library ratings and stores them in a variable"""
-    libraries = {}
+    libraries = []
 
-    with open('library_scores.csv', 'r') as file:
+    with open(file_name, 'r') as file:
         reader = csv.reader(file)
         for row in reader:
-            libraries[row[0]] = Library(row[1], row[2], row[3], row[4])
+            libraries.append(Library(row[0], int(row[1]), int(row[2]), int(row[3]), int(row[4])))
     return libraries
 
+
 if __name__ == '__main__':
-    quiet = input("Quietness Preference: ")
-    bright = input("Brightness, Aesthetic Preference: ")
-    charger = input("Charger Availability Preference: ")
-    crowdedness = input("Crowdedness Preference: ")
+    quiet = int(input("Quietness Preference: "))
+    bright = int(input("Brightness, Aesthetic Preference: "))
+    charger = int(input("Charger Availability Preference: "))
+    crowdedness = int(input("Crowdedness Preference: "))
+    libraries = load('library_scores.csv')
+    user = User(quiet, bright, charger, crowdedness, libraries)
+    print(f'Here are the top 3 libraries matching your choice: {user.get_best_library(3)}')
