@@ -36,7 +36,7 @@ def load() -> dict[str, Libraries]:
     """ reads csv file with library ratings and stores them in a variable"""
     libraries = {}
     
-    with open(book_names_file, 'r') as file:
+    with open('library_scores.csv', 'r') as file:
         reader = csv.reader(file)
         for row in reader:
             libraries[row[0]] = library(row[1], row[2], row[3], row[4])
