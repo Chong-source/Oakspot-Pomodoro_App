@@ -1,4 +1,7 @@
-class Libraries:
+import csv
+
+
+class Library:
     """A data class that stores the scores of each """
     quiet: int
     bright: int
@@ -21,7 +24,7 @@ class User:
     bright: int
     charger: int
     crowdedness: int
-    libraries: list[Libraries]
+    libraries: list[Library]
 
     def __init__(self, quiet, bright, charger, crowdedness, libraries) -> None:
         self.quiet = quiet
@@ -32,13 +35,18 @@ class User:
     def get_best_library(self):
 
 
-def load() -> dict[str, Libraries]:
+def load() -> dict[str, Library]:
     """ reads csv file with library ratings and stores them in a variable"""
     libraries = {}
-    
+
     with open('library_scores.csv', 'r') as file:
         reader = csv.reader(file)
         for row in reader:
-            libraries[row[0]] = library(row[1], row[2], row[3], row[4])
-
+            libraries[row[0]] = Library(row[1], row[2], row[3], row[4])
     return libraries
+
+if __name__ == '__main__':
+    quiet = input("Quietness Preference: ")
+    bright = input("Brightness, Aesthetic Preference: ")
+    charger = input("Charger Availability Preference: ")
+    crowdedness = input("Crowdedness Preference: ")
